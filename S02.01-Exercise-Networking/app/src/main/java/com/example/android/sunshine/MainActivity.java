@@ -23,6 +23,9 @@ import android.widget.TextView;
 
 import com.example.android.sunshine.data.SunshinePreferences;
 import com.example.android.sunshine.utilities.NetworkUtils;
+import com.example.android.sunshine.utilities.OpenWeatherJsonUtils;
+
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.net.URL;
@@ -56,8 +59,17 @@ public class MainActivity extends AppCompatActivity {
     private class FetchWeatherTask extends AsyncTask<URL, Void, String> {
         @Override
         protected void onPostExecute(String response) {
+            String[] data = null;
+            try {
+                data = OpenWeatherJsonUtils.getSimpleWeatherStringsFromJson(MainActivity.this, response);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
             if(response != null && !response.equals("")) {
-                mWeatherTextView.setText(response);
+                for(String weatherData : data) {
+                    mWeatherTextView.append(weatherData + "\n\n\n");
+                }
             } else {
                 mWeatherTextView.setText(R.string.weather_error);
             }
