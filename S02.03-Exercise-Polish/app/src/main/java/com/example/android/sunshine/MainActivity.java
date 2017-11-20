@@ -67,7 +67,10 @@ public class MainActivity extends AppCompatActivity {
      * background method to get the weather data in the background.
      */
     private void loadWeatherData() {
-        // TODO (20) Call showWeatherDataView before executing the AsyncTask
+        // Complete (20) Call showWeatherDataView before executing the AsyncTask
+
+        showWeatherDataView();
+
         String location = SunshinePreferences.getPreferredWeatherLocation(this);
         new FetchWeatherTask().execute(location);
     }
@@ -88,7 +91,12 @@ public class MainActivity extends AppCompatActivity {
 
     public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
-        // TODO (18) Within your AsyncTask, override the method onPreExecute and show the loading indicator
+        // Complete (18) Within your AsyncTask, override the method onPreExecute and show the loading indicator
+
+        @Override
+        protected void onPreExecute() {
+            mWeatherProgressBar.setVisibility(View.VISIBLE);
+        }
 
         @Override
         protected String[] doInBackground(String... params) {
@@ -118,7 +126,9 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String[] weatherData) {
-            // TODO (19) As soon as the data is finished loading, hide the loading indicator
+            // Complete (19) As soon as the data is finished loading, hide the loading indicator
+
+            mWeatherProgressBar.setVisibility(View.INVISIBLE);
 
             if (weatherData != null) {
                 // Complete (11) If the weather data was not null, make sure the data view is visible
