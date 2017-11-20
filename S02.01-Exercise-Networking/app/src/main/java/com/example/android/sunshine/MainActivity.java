@@ -15,9 +15,15 @@
  */
 package com.example.android.sunshine;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
+
+import com.example.android.sunshine.utilities.NetworkUtils;
+
+import java.io.IOException;
+import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,14 +39,32 @@ public class MainActivity extends AppCompatActivity {
          * do things like set the text of the TextView.
          */
         mWeatherTextView = (TextView) findViewById(R.id.tv_weather_data);
-        
+
 
         // TODO (9) Call loadWeatherData to perform the network request to get the weather
     }
 
-    // TODO (8) Create a method that will get the user's preferred location and execute your new AsyncTask and call it loadWeatherData
+    private class FetchWeatherTask extends AsyncTask<URL, Void, String> {
+        @Override
+        protected void onPostExecute(String response) {
+            if(response != null && !response.equals("")) {
+                mWeatherTextView.setText(response);
+            } else {
+                mWeatherTextView.setText(R.string.weather_error);
+            }
+        }
 
-    // TODO (5) Create a class that extends AsyncTask to perform network requests
-    // TODO (6) Override the doInBackground method to perform your network requests
-    // TODO (7) Override the onPostExecute method to display the results of the network request
+        @Override
+        protected String doInBackground(URL... urls) {
+            URL url = urls[0];
+            String response = null;
+            try {
+                response = NetworkUtils.getResponseFromHttpUrl(url);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return response;
+        }
+    }
+
 }
