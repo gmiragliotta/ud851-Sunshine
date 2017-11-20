@@ -15,11 +15,13 @@
  */
 package com.example.android.sunshine;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import com.example.android.sunshine.data.SunshinePreferences;
 import com.example.android.sunshine.utilities.NetworkUtils;
 
 import java.io.IOException;
@@ -41,7 +43,14 @@ public class MainActivity extends AppCompatActivity {
         mWeatherTextView = (TextView) findViewById(R.id.tv_weather_data);
 
 
-        // TODO (9) Call loadWeatherData to perform the network request to get the weather
+        loadWeatherData();
+    }
+
+    private void loadWeatherData(){
+        Context context = MainActivity.this;
+        String location = SunshinePreferences.getPreferredWeatherLocation(context);
+        URL url = NetworkUtils.buildUrl(location);
+        new FetchWeatherTask().execute(url);
     }
 
     private class FetchWeatherTask extends AsyncTask<URL, Void, String> {
