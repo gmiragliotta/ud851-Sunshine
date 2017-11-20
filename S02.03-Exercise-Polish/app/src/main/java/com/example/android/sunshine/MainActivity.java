@@ -21,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -71,9 +72,19 @@ public class MainActivity extends AppCompatActivity {
         new FetchWeatherTask().execute(location);
     }
 
-    // TODO (8) Create a method called showWeatherDataView that will hide the error message and show the weather data
+    // Complete (8) Create a method called showWeatherDataView that will hide the error message and show the weather data
 
-    // TODO (9) Create a method called showErrorMessage that will hide the weather data and show the error message
+    private void showWeatherDataView() {
+        mWeatherErrorTextView.setVisibility(View.INVISIBLE);
+        mWeatherTextView.setVisibility(View.VISIBLE);
+    }
+
+    // Complete (9) Create a method called showErrorMessage that will hide the weather data and show the error message
+
+    private void showErrorMessage() {
+        mWeatherTextView.setVisibility(View.INVISIBLE);
+        mWeatherErrorTextView.setVisibility(View.VISIBLE);
+    }
 
     public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
@@ -110,7 +121,10 @@ public class MainActivity extends AppCompatActivity {
             // TODO (19) As soon as the data is finished loading, hide the loading indicator
 
             if (weatherData != null) {
-                // TODO (11) If the weather data was not null, make sure the data view is visible
+                // Complete (11) If the weather data was not null, make sure the data view is visible
+
+                showWeatherDataView();
+
                 /*
                  * Iterate through the array and append the Strings to the TextView. The reason why we add
                  * the "\n\n\n" after the String is to give visual separation between each String in the
@@ -119,8 +133,13 @@ public class MainActivity extends AppCompatActivity {
                 for (String weatherString : weatherData) {
                     mWeatherTextView.append((weatherString) + "\n\n\n");
                 }
+            } else {
+                // Complete (10) If the weather data was null, show the error message
+
+                showErrorMessage();
             }
-            // TODO (10) If the weather data was null, show the error message
+
+
 
         }
     }
