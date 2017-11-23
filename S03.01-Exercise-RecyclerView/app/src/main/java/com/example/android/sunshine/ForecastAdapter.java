@@ -7,11 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.List;
-
 public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapterViewHolder> {
 
-    private List<String> mWeatherData;
+    private String[] mWeatherData;
+
+    // Complete (47) Create the default constructor (we will pass in parameters in a later lesson)
+
+    public ForecastAdapter() {
+
+    }
 
     @Override
     public ForecastAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -25,17 +29,18 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
 
     @Override
     public void onBindViewHolder(ForecastAdapterViewHolder holder, int position) {
-        holder.mWeatherTextView.setText(position);
+        String weatherForThisDay = mWeatherData[position];
+        holder.mWeatherTextView.setText(weatherForThisDay);
     }
 
     @Override
     public int getItemCount() {
-        if(mWeatherData != null)
-            return mWeatherData.size();
+        if(null != mWeatherData)
+            return mWeatherData.length;
         return 0;
     }
 
-    void setWeatherData(List<String> weatherData) {
+    void setWeatherData(String[] weatherData) {
         mWeatherData = weatherData;
         notifyDataSetChanged();
     }
